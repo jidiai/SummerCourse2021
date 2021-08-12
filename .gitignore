@@ -1,0 +1,6 @@
+__pycache__
+.idea*
+/course2/logs
+.DS_Store
+/course2/examples/models
+/course3/examples/models
