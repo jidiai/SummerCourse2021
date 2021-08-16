@@ -1,4 +1,4 @@
-# SummerCourse2021
+# SummerCourse2021_
 
 一起来学习吧^0^
 
@@ -18,7 +18,7 @@
 
 课程表👇
 
-![image](https://github.com/jidiai/SummerCourse2021/blob/main/schedule.png)
+![image](https://github.com/jidiai/SummerCourse2021/blob/main/assets/schedule.png)
 
 ---
 ### Env Dependency
