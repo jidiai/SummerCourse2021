@@ -13,7 +13,7 @@
 
 
 ---
-#How to train your rl_agent:
+# How to train your rl_agent:
 
 have a go~
 >python main.py --scenario cliffwalking --algo sarsa --reload_config
