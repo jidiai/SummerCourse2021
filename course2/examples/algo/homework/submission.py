@@ -11,9 +11,15 @@ q_table = os.path.dirname(os.path.abspath(__file__)) + '/q_table.pth'
 q_values = np.loadtxt(q_table, delimiter=",")
 
 
-# todo
 def action_from_algo_to_env(joint_action):
-    pass
+    joint_action_ = []
+    for a in range(1):
+        action_a = joint_action
+        each = [0] * 4
+        each[action_a] = 1
+        joint_action_.append(each)
+    return joint_action_
+
 
 # todo
 def behaviour_policy(q):
@@ -27,4 +33,5 @@ def epsilon_greedy(q_values):
 
 # todo
 def my_controller(observation, action_space, is_act_continuous=False):
+    obs = observation['obs']
     pass

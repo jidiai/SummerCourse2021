@@ -68,7 +68,7 @@ def plot_values(grid, values, colormap='pink', vmin=0, vmax=10):
     plt.imshow(values - 1000 * (grid < 0), interpolation="nearest", cmap=colormap, vmin=vmin, vmax=vmax)
     plt.yticks([])
     plt.xticks([])
-    plt.colorbar(ticks=[vmin, vmax])
+    # plt.colorbar(ticks=[vmin, vmax])
 
 
 def plot_action_values(algo, grid, action_values, vmin=-5, vmax=5):

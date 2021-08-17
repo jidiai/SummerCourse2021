@@ -9,7 +9,7 @@
 ## Env 👉请看 [cliffwalking.py](env/cliffwalking.py)
 ## Q-learning 👉请看 [tabularq.py](examples/algo/tabularq/tabularq.py)
 ## Sarsa 👉请看 [sarsa.py](examples/algo/sarsa/sarsa.py)
-## Homework 👉请看 [submission.py](examples/homework/tabularq/submission.py)
+## Homework 👉请看 [submission.py](examples/algo/homework/submission.py)
 
 ---
 # How to train your rl_agent:
