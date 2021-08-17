@@ -129,7 +129,8 @@ class Runner:
         for i_epoch in range(1, self.paras.max_episodes+1):
             self.env.set_seed(random.randint(0, sys.maxsize))
             state = self.env.reset()
-            self.env.make_render()
+            if self.paras.render:
+                self.env.make_render()
             step = 0
             Gt = 0
             while not self.g_core.is_terminal():
@@ -138,7 +139,8 @@ class Runner:
                 next_state, reward, done, info_before, info_after = self.env.step(joint_act)
                 self.add_experience(state, next_state, reward, np.float32(done))
 
-                self.env.make_render()
+                if self.paras.render:
+                    self.env.make_render()
 
                 state = next_state
                 if self.paras.marl:

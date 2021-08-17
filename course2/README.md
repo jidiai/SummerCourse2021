@@ -9,7 +9,7 @@
 ## Env 👉请看 [cliffwalking.py](env/cliffwalking.py)
 ## Q-learning 👉请看 [tabularq.py](examples/algo/tabularq/tabularq.py)
 ## Sarsa 👉请看 [sarsa.py](examples/algo/sarsa/sarsa.py)
-## Homework 👉请看 [submission.py](examples/algo/tabularq/submission.py)
+## Homework 👉请看 [submission.py](examples/homework/tabularq/submission.py)
 
 ---
 # How to train your rl_agent:
@@ -23,6 +23,14 @@ have a go~
 1. 算法需要在本地训练，及第平台提供了经典算法实现、训练框架和提交样例。
 2. 在config文件夹里，已经保存了算法库对接多个环境和多个算法的训练参数。支持一键复现，只需要加 --reload_config这个参数（So cool...
 3. 训练开始后，会生成models文件夹，在models/config_training里面保存了训练过程中的参数。可以试着不加reload_config，就在👈里调参，主run会自动上传这里的参数：例如python main.py --scenario cliffwalking --algo sarsa
+
+---
+# How to test submission
+
+Complete submission.py, and then
+>python run_log.py 
+
+If no errors, your submission is ready to go~
 
 ---
 # Bonus

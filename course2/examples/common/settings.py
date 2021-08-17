@@ -45,112 +45,6 @@ class SARSASettings(HyperparamSettings):
 
 
 @attr.s(auto_attribs=True)
-class DQNSettings(HyperparamSettings):
-    c_lr: float = 0.005
-    buffer_capacity: int = 1024
-    batch_size: int = 64
-    gamma: float = 0.99
-    epsilon: float = 0.5
-    epsilon_end: float = 0.05
-    target_replace: int = 100
-    hidden_size: int = 64
-
-
-@attr.s(auto_attribs=True)
-class DDQNSettings(HyperparamSettings):
-    c_lr: float = 0.005
-    buffer_capacity: int = 256
-    batch_size: int = 64
-    gamma: float = 0.99
-    epsilon: float = 0.5
-    epsilon_end: float = 0.05
-    target_replace: int = 100
-
-
-@attr.s(auto_attribs=True)
-class DUELINGQSettings(HyperparamSettings):
-    c_lr: float = 0.005
-    buffer_capacity: int = 256
-    batch_size: int = 64
-    gamma: float = 0.99
-    epsilon: float = 0.5
-    epsilon_end: float = 0.05
-    target_replace: int = 100
-
-
-@attr.s(auto_attribs=True)
-class DDPGSettings(HyperparamSettings):
-    a_lr: float = 0.005
-    c_lr: float = 0.005
-    buffer_capacity: int = 256
-    batch_size: int = 64
-    gamma: float = 0.99
-    tau: float = 0.2
-    epsilon: float = 0.5
-    epsilon_end: float = 0.05
-    update_freq: int = 5
-
-
-@attr.s(auto_attribs=True)
-class PGSettings(HyperparamSettings):
-    c_lr: float = 0.005
-    buffer_capacity: int = 256
-    batch_size: int = 64
-    gamma: float = 0.99
-
-
-@attr.s(auto_attribs=True)
-class ACSettings(HyperparamSettings):
-    c_lr: float = 0.005
-    buffer_capacity: int = 100
-    batch_size: int = 32
-    gamma: float = 0.99
-
-
-@attr.s(auto_attribs=True)
-class PPOSettings(HyperparamSettings):
-    c_lr: float = 0.005
-    a_lr: float = 0.005
-    clip_param: float = 0.2
-    max_grad_norm: float = 0.5
-    update_freq: int = 10
-    buffer_capacity: int = 100
-    batch_size: int = 32
-    gamma: float = 0.99
-
-
-@attr.s(auto_attribs=True)
-class PPO_CNNSettings(PPOSettings):
-    cnn_encoder: bool = True
-
-
-@attr.s(auto_attribs=True)
-class SACSettings(HyperparamSettings):
-    c_lr: float = 0.0001
-    buffer_capacity: int = 256
-    batch_size: int = 64
-    gamma: float = 0.99
-    target_replace: int = 100
-    tune_entropy: bool = False
-    alpha: float = 0.2
-    # network: str = "critic"
-    # policy_type: str = "discrete"
-
-
-@attr.s(auto_attribs=True)
-class MADDPGSettings(HyperparamSettings):
-    lr_c: float = 0.01
-    lr_a: float = 0.01
-    buffer_capacity: int = 1000000
-    batch_size: int = 1256
-    gamma: float = 0.97
-    tao: float = 0.01
-    target_replace: int = 100
-    marl: bool = True
-    action_continuous: bool = True
-
-
-@attr.s(auto_attribs=True)
 class EnvSettingDefault:
     scenario: str = "classic_CartPole-v0"
     obs_space: int = 100
@@ -164,10 +58,10 @@ class EnvSettingDefault:
 class TrainingDefault:
     learn_freq: int = 1
     learn_terminal: bool = False
-    max_episodes: int = 500
+    max_episodes: int = 1000
     evaluate_rate: int = 50
-    render: bool = False
-    save_interval: int = 500
+    render: bool = True
+    save_interval: int = 100
 
 
 @attr.s(auto_attribs=True)
@@ -188,21 +82,6 @@ class TrainerSettings(ExportableSettings):
 
 def create_dummy_config(CONFIG):
     return copy.deepcopy(CONFIG)
-
-
-# def save_config(args, save_path, file_name):
-#     file = open(os.path.join(str(save_path), str(file_name) + '.yaml'), mode='w', encoding='utf-8')
-#     yaml.dump(args.as_dict(), file)
-#     file.close()
-#
-#
-# def load_config(config_path: str) -> Dict[str, Any]:
-#     with open(config_path) as data_file:
-#         return _load_config(data_file)
-#
-#
-# def _load_config(data_file):
-#     return yaml.safe_load(data_file)
 
 
 def load_config2(log_path):
