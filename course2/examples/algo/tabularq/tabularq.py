@@ -86,3 +86,5 @@ class TABULARQ(object):
         data_path = os.path.join(base_path, "q_" + str(episode) + ".pth")
         np.savetxt(data_path, self._q, delimiter=",")
 
+    def load(self, file):
+        self._q = np.loadtxt(file, delimiter=",")

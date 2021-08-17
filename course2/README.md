@@ -14,7 +14,7 @@
 ---
 # How to train your rl_agent:
 
-have a go~
+Have a go~
 >python main.py --scenario cliffwalking --algo sarsa --reload_config
 
 >python main.py --scenario cliffwalking --algo tabularq --reload_config

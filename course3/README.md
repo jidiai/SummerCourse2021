@@ -11,7 +11,7 @@
 ---
 # How to train your rl_agent:
 
-have a go~
+Have a go~
 >python main.py --scenario classic_CartPole-v0 --algo dqn --reload_config 
 
 We also provide 2 DQN variants - DDQN & Dueling DQN.
