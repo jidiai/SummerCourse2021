@@ -4,9 +4,10 @@ import argparse
 if __name__ == '__main__':
     # set env and algo
     parser = argparse.ArgumentParser()
-    parser.add_argument('--scenario', default="gridworld", type=str)
+    parser.add_argument('--scenario', default="gridworld", type=str,
+                        help="gridworld/cliffwalking")
     parser.add_argument('--algo', default="tabularq", type=str,
-                        help="tabularq/sarsa/dqn/ppo/ddpg/ac/ddqn/duelingq/sac/pg/sac/td3")
+                        help="tabularq/sarsa")
 
     parser.add_argument('--reload_config', action='store_true')  # 加是true；不加为false
     args = parser.parse_args()
