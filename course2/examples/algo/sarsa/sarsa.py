@@ -43,7 +43,7 @@ class SARSA(object):
         self.eps = max(self.eps_end, self.eps - self.eps_delay)
         return self.epsilon_greedy(q, epsilon=self.eps)
 
-    def target_policy(self, q, a):
+    def one_hot_policy(self, q, a):
         return np.eye(len(q))[a]
 
     def epsilon_greedy(self, q_values, epsilon):
@@ -77,7 +77,7 @@ class SARSA(object):
         done = data['dones']
 
         next_action = self.behaviour_policy(self.q_values[next_state, :])
-        target_index = self.target_policy(self._q[next_state, :], next_action)
+        target_index = self.one_hot_policy(self._q[next_state, :], next_action)
         target = reward + self.gamma * (self._q[next_state, :] @ target_index) * (1 - done)
         self._q[state, action] += self.lr * (target - self._q[state, action])
         self._last_action = next_action

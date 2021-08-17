@@ -6,6 +6,11 @@ sys.path.append(str(base_dir))
 from env.chooseenv import make
 env = make("cliffwalking")
 
+import pygame
+pygame.init()
+screen = pygame.display.set_mode(env.grid.size)
+clock = pygame.time.Clock()
+
 
 class cliffwalking(BaseWrapper):
     def __init__(self):
@@ -32,8 +37,15 @@ class cliffwalking(BaseWrapper):
         return state
 
     def close(self):
+        # pygame.quit()
         pass
 
     def set_seed(self, seed=None):
         pass
+
+    def make_render(self):
+        pygame.surfarray.blit_array(screen, self.env.render_board().transpose(1, 0, 2))
+        pygame.display.flip()
+        # fps=200
+        # self.clock.tick(fps)
 

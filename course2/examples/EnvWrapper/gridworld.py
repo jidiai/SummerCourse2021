@@ -37,3 +37,6 @@ class gridworld(BaseWrapper):
     def set_seed(self, seed=None):
         pass
 
+    def make_render(self):
+        pass
+

@@ -493,9 +493,12 @@
     "obs_type": ["dict"],
     "act_box": {"discrete_n": 4}
   },
-  "cliffwalking": {
+    "cliffwalking": {
     "class_literal": "CliffWalking",
     "n_player": 1,
+    "board_width": 12,
+    "cell_range": 4,
+    "board_height": 4,
     "max_step": 1000,
     "game_name": "cliff_walking",
     "is_obs_continuous": false,
