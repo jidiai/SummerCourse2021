@@ -6,11 +6,10 @@
 
 
 ---
-## Env 👉请看 env/cliffwalking.py
-
-## Q-learning 👉请看 examples/algo/tabularq.py
-## Sarsa 👉请看 examples/algo/sarsa.py
-
+## Env 👉请看 [cliffwalking.py](https://github.com/jidiai/SummerCourse2021/blob/main/course2/env/cliffwalking.py)
+## Q-learning 👉请看 [tabularq.py](https://github.com/jidiai/SummerCourse2021/blob/main/course2/examples/algo/tabularq/tabularq.py)
+## Sarsa 👉请看 [sarsa.py](https://github.com/jidiai/SummerCourse2021/blob/main/course2/examples/algo/sarsa/sarsa.py)
+## Homework 👉请看 [submission.py](https://github.com/jidiai/SummerCourse2021/blob/main/course2/examples/algo/tabularq/submission.py)
 
 ---
 # How to train your rl_agent:
@@ -27,4 +26,4 @@ have a go~
 
 ---
 # Bonus
-gridworld和cliffwarking都是网格环境，智能体tabularq依然是“冒险家“，sarsa还是“保险主义”。运行试试吧^0^
+gridworld和cliffwalking都是网格环境，智能体tabularq依然是“冒险家“，sarsa还是“保险主义”。运行试试吧^0^

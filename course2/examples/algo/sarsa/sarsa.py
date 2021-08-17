@@ -83,19 +83,9 @@ class SARSA(object):
         self._last_action = next_action
 
     def save(self, save_path, episode):
-        if self.args.scenario == "gridworld":
-            W = -100  # wall
-            G = 100  # goal
-            GRID_LAYOUT = np.array([
-                [W, W, W, W, W, W, W, W, W, W, W, W],
-                [W, W, 0, W, W, W, W, W, W, 0, W, W],
-                [W, 0, 0, 0, 0, 0, 0, 0, 0, G, 0, W],
-                [W, 0, 0, 0, W, W, W, W, 0, 0, 0, W],
-                [W, 0, 0, 0, W, W, W, W, 0, 0, 0, W],
-                [W, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, W],
-                [W, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, W],
-                [W, W, 0, 0, 0, 0, 0, 0, 0, 0, W, W],
-                [W, W, W, W, W, W, W, W, W, W, W, W]
-            ])
-            plot_action_values(self.args.algo, GRID_LAYOUT, self._q.reshape((9, 12) + (4,)), vmin=-20, vmax=100)
+        base_path = os.path.join(save_path, 'trained_model')
+        if not os.path.exists(base_path):
+            os.makedirs(base_path)
+        data_path = os.path.join(base_path, "q_" + str(episode) + ".pth")
+        np.savetxt(data_path, self._q, delimiter=",")
 

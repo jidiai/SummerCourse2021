@@ -1,49 +1,29 @@
-## 平台地址
-[jidi_ai](http://www.jidiai.cn/)
+# 习题课第三天
 
-## 项目依赖
+## 任务：车杆cartpole - 算法DQN - 提交到Jidi平台，成绩优于随机10%
 
-- `Python 3.7.5`
-- `gym` https://github.com/openai/gym
-- `gfootball` https://github.com/google-research/football
-- `miniworld` https://github.com/maximecb/gym-miniworld#installation
-- `minigrid` https://github.com/maximecb/gym-minigrid
-- `Multi-Agent Particle Environment` https://github.com/openai/multiagent-particle-envs
-- `Overcooked-AI` https://github.com/HumanCompatibleAI/overcooked_ai
-- `MAgent` https://www.pettingzoo.ml/magent
-  
-  (Using `pip install 'pettingzoo[magent]'` if you are using zsh; 
-  Using render_from_log.py for MAgent local render)
-- `Torch 1.7.0` 可选
-  - 支持提交Torch训练后的模型.pth附属文件
+提交链接：http://www.jidiai.cn/cartpole
 
-## 目录结构
 
-```
-|-- platform_lib
-	|-- README.md
-	|-- run_log.py		// 本地调试运行环境
-	|-- examples	// 提交运行文件示例	需包含 my_controller 函数输出policy
-	    |-- random.py  // 随机策略 需根据环境动作是否连续 调整 is_act_continuous 的值
-	|-- replay		// render工具，用于非gym环境，打开replay.html上传run_log 存储的.json文件 
-	|-- env		// 游戏环境 
-	|	|-- simulators		// 模拟器
-	|	|	|-- game.py
-	|	|	|-- gridgame.py // 网格类模拟器接口
-	|	|-- obs_interfaces		// observation 观测类接口
-	|	|	|-- observation.py		// 目前支持Grid Vector
-	|	|-- config.ini		// 相关配置文件
-	|	|-- chooseenv.py 
-	|	|-- snakes.py
-	|	|-- gobang.py
-	|	|-- reversi.py
-	|	|-- sokoban.py
-	|	|-- ccgame.py
+---
+## DQN 👉请看 examples/algo/dqn/dqn.py
 
-```
+---
+# How to train your rl_agent:
 
-## 平台提交说明
-1. 填写算法名称或描述，选择提交环境
-2. 上传一个或多个文件。
-- 其中必须包含一个运行文件，运行文件需包含`my_controller` 函数的一个`submission.py`文件。
-- 附属文件支持`.pth` `.py`类型文件。大小不超过100M，个数不超过5个。 
+have a go~
+>python main.py --scenario classic_CartPole-v0 --algo dqn --reload_config 
+
+We also provide 2 DQN variants - DDQN & Dueling DQN.
+>python main.py --scenario classic_CartPole-v0 --algo ddqn --reload_config 
+
+>python main.py --scenario classic_CartPole-v0 --algo duelingq --reload_config 
+
+说明：
+1. 算法需要在本地训练，及第平台提供了经典算法实现、训练框架和提交样例。
+2. 在config文件夹里，已经保存了算法库对接多个环境和多个算法的训练参数。支持一键复现，只需要加 --reload_config这个参数（So cool...
+3. 训练开始后，会生成models文件夹，在models/config_training里面保存了训练过程中的参数。可以试着不加reload_config，就在👈里调参，主run会自动上传这里的参数：例如python main.py --scenario cliffwalking --algo sarsa
+
+---
+# Bonus
+

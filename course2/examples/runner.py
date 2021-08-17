@@ -155,11 +155,22 @@ class Runner:
             if i_epoch % self.paras.save_interval == 0:
                 self.agent.save(self.run_dir, i_epoch)
 
-            # if i_epoch % self.paras.evaluate_rate == 0 and i_epoch > 1:
-            #     Gt_real = self.evaluate(i_epoch)
-            #     self.writer.add_scalars(reward_tag, global_step=i_epoch,
-            #                             tag_scalar_dict={'real_return': Gt_real})
+        if self.paras.scenario == "gridworld":
+            W = -100  # wall
+            G = 100  # goal
+            GRID_LAYOUT = np.array([
+                [W, W, W, W, W, W, W, W, W, W, W, W],
+                [W, W, 0, W, W, W, W, W, W, 0, W, W],
+                [W, 0, 0, 0, 0, 0, 0, 0, 0, G, 0, W],
+                [W, 0, 0, 0, W, W, W, W, 0, 0, 0, W],
+                [W, 0, 0, 0, W, W, W, W, 0, 0, 0, W],
+                [W, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, W],
+                [W, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, W],
+                [W, W, 0, 0, 0, 0, 0, 0, 0, 0, W, W],
+                [W, W, W, W, W, W, W, W, W, W, W, W]
+            ])
 
+            plot_action_values(self.paras.algo, GRID_LAYOUT, self.agent.agent[0]._q.reshape((9, 12) + (4,)), vmin=-20, vmax=100)
 
     def evaluate(self, i_epoch):
         record = []
