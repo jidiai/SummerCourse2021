@@ -6,10 +6,10 @@
 
 
 ---
-## Env 👉请看 [cliffwalking.py](https://github.com/jidiai/SummerCourse2021/blob/main/course2/env/cliffwalking.py)
-## Q-learning 👉请看 [tabularq.py](https://github.com/jidiai/SummerCourse2021/blob/main/course2/examples/algo/tabularq/tabularq.py)
-## Sarsa 👉请看 [sarsa.py](https://github.com/jidiai/SummerCourse2021/blob/main/course2/examples/algo/sarsa/sarsa.py)
-## Homework 👉请看 [submission.py](https://github.com/jidiai/SummerCourse2021/blob/main/course2/examples/algo/tabularq/submission.py)
+## Env 👉请看 [cliffwalking.py](env/cliffwalking.py)
+## Q-learning 👉请看 [tabularq.py](examples/algo/tabularq/tabularq.py)
+## Sarsa 👉请看 [sarsa.py](examples/algo/sarsa/sarsa.py)
+## Homework 👉请看 [submission.py](examples/algo/tabularq/submission.py)
 
 ---
 # How to train your rl_agent:

@@ -21,7 +21,7 @@
 
 课程表👇
 
-![image](https://github.com/jidiai/SummerCourse2021/blob/main/assets/schedule.png)
+![image](assets/schedule.png)
 
 ---
 ### Env Dependency
