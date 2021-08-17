@@ -8,7 +8,7 @@ Follow the instructions and then you can reply the same performance as below.
 
 >python main.py --scenario classic_CartPole-v0 --algo duelingq --reload_config
 
-[comment]: <> (![image]&#40;https://github.com/jidiai/ai_lib/raw/master/examples/assets/dqn_cartpole.png&#41;)
+![image](https://github.com/jidiai/ai_lib/raw/master/examples/assets/dqn_cartpole.png)
 
 [comment]: <> (**classic_MountainCar-v0**)
 
