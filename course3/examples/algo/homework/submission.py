@@ -24,11 +24,17 @@ class DQN:
         pass
 
 
-#TODO: Complete a action wrapper. You can refer to hw1.
 def action_from_algo_to_env(joint_action):
-    pass
+    joint_action_ = []
+    for a in range(n_player):
+        action_a = joint_action
+        each = [0] * action_dim
+        each[action_a] = 1
+        joint_action_.append(each)
+    return joint_action_
 
 
+n_player = 1
 state_dim = 4
 action_dim = 2
 hidden_size = 64
