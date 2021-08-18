@@ -108,7 +108,7 @@ def config_reformat(my_dict):
 if __name__ == "__main__":
     # -----------------------------------
     DQN_CONFIG = TrainerSettings(
-        algo="dqn",
+        algo="iql",
         hyperparameters=DQNSettings(),
         envparameters=EnvSettingDefault(),
         trainingparameters=TrainingDefault(),

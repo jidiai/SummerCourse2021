@@ -18,8 +18,9 @@ def get_trajectory_property():
     return ["action"]
 
 
-class DDQN(object):
+class IQL(object):
     def __init__(self, args):
+
         self.state_dim = args.obs_space
         self.action_dim = args.action_space
 
@@ -29,14 +30,14 @@ class DDQN(object):
         self.batch_size = args.batch_size
         self.gamma = args.gamma
 
-        self.critic_eval = Critic(self.state_dim, self.action_dim, self.hidden_size)
+        self.critic_eval = Critic(self.state_dim,  self.action_dim, self.hidden_size)
         self.critic_target = Critic(self.state_dim, self.action_dim, self.hidden_size)
         self.optimizer = optimizer.Adam(self.critic_eval.parameters(), lr=self.lr)
 
         # exploration
         self.eps = args.epsilon
         self.eps_end = args.epsilon_end
-        self.eps_delay = 1 / (args.max_episodes * 100)
+        self.eps_delay = 1 / (args.max_episodes * 2000)
 
         # 更新target网
         self.learn_step_counter = 0
@@ -54,6 +55,7 @@ class DDQN(object):
 
     def inference(self, observation, train):
         if train:
+            state = observation.copy()
             self.eps = max(self.eps_end, self.eps - self.eps_delay)
             if random.random() < self.eps:
                 action = random.randrange(self.action_dim)
@@ -65,7 +67,8 @@ class DDQN(object):
             observation = torch.tensor(observation, dtype=torch.float).view(1, -1)
             action = torch.argmax(self.critic_eval(observation)).item()
 
-        return {"action": action}
+        return {"action": action,
+                "states": state}
 
     def add_experience(self, output):
         agent_id = 0
@@ -73,7 +76,6 @@ class DDQN(object):
             self.memory.insert(k, agent_id, v)
 
     def learn(self):
-
         data_length = len(self.memory.item_buffers["rewards"].data)
         if data_length < self.buffer_size:
             return
@@ -88,18 +90,15 @@ class DDQN(object):
             "d_0": np.array(data['dones']).reshape(-1, 1),
         }
 
-        obs = torch.tensor(transitions["o_0"], dtype=torch.float)
+        obs = torch.tensor(transitions["o_0"], dtype=torch.float).view(self.batch_size, -1)
         obs_ = torch.tensor(transitions["o_next_0"], dtype=torch.float)
         action = torch.tensor(transitions["u_0"], dtype=torch.long).view(self.batch_size, -1)
-        reward = torch.tensor(transitions["r_0"], dtype=torch.float)
-        done = torch.tensor(transitions["d_0"], dtype=torch.float)
+        reward = torch.tensor(transitions["r_0"], dtype=torch.float).squeeze()
+        done = torch.tensor(transitions["d_0"], dtype=torch.float).squeeze()
 
         q_eval = self.critic_eval(obs).gather(1, action)
-        q_eval_next = self.critic_eval(obs_)
-        max_action = torch.argmax(q_eval_next, dim=1).unsqueeze(1)
-        q_next = self.critic_target(obs_).gather(1, max_action).detach()
-        q_target = reward + self.gamma * q_next * (1 - done)
-
+        q_next = self.critic_target(obs_).detach()
+        q_target = (reward + self.gamma * q_next.max(1)[0] * (1 - done)).view(self.batch_size, 1)
         loss_fn = nn.MSELoss()
         loss = loss_fn(q_eval, q_target)
 
@@ -123,5 +122,3 @@ class DDQN(object):
 
     def load(self, file):
         self.critic_eval.load_state_dict(torch.load(file))
-
-

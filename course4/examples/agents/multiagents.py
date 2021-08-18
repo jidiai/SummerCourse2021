@@ -4,6 +4,7 @@ import sys
 base_dir = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(base_dir))
 from agents.baseagent import Baseagent
+from EnvWrapper.snakes_5p import get_observations
 
 
 def ini_agents(args):
@@ -24,35 +25,31 @@ class MultiRLAgents(Baseagent):
         self.set_agent()
 
     def set_agent(self):
-        self.agent = self.algo.agents
+        for i in range(self.args.n_player):
+            self.agent.append(self.algo)
 
-    def action_from_algo_to_env(self, joint_action, id):
+    def action_from_algo_to_env(self, joint_action):
         '''
         :param joint_action:
         :return: wrapped joint action: one-hot
         '''
-
-        joint_action_ = None
-        action_a = joint_action["action"]
-        if not self.args.action_continuous:   #discrete action space
-            each = [0] * self.args.action_space[id]
-            each[action_a] = 1
-            joint_action_ = each
-        else:
-            joint_action_ = action_a   #continuous action space
-
+        joint_action_ = []
+        for a in range(1):
+            action_a = joint_action["action"]
+            if not self.args.action_continuous:  # discrete action space
+                each = [0] * self.args.action_space
+                each[action_a] = 1
+                joint_action_.append(each)
+            else:
+                joint_action_.append(action_a)  # continuous action space
         return joint_action_
 
     def choose_action_to_env(self, observation, train=True):
         obs_copy = observation.copy()
-        obs = obs_copy["obs"]
-        agent_id = obs_copy["controlled_player_index"]
-        action_from_algo = self.agent[agent_id].choose_action(obs, train)
-        action_to_env = self.action_from_algo_to_env({"action": action_from_algo}, agent_id)
+        agent_id = obs_copy["controlled_snake_index"] - 2
+        agents_index = [agent_id]
+        obs_wrapped = get_observations(obs_copy, agents_index, obs_dim=self.args.obs_space)
+        action_from_algo = self.agent[agent_id].choose_action(obs_wrapped, train)  # share parameter
+        action_to_env = self.action_from_algo_to_env(action_from_algo)
+
         return action_to_env
-
-    def learn(self):
-        self.algo.learn()
-
-    def save(self, p_dir, epoch):
-        self.algo.save(p_dir, epoch)

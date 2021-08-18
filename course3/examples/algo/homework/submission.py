@@ -12,25 +12,34 @@ sys.path.append(str(base_dir))
 from critic import Critic
 
 
-# TODO
+# TODO: Complete DQN algo under evaluation.
 class DQN:
     def __init__(self):
         pass
 
+    def choose_action(self, observation):
+        pass
 
-#TODO
+    def load(self, file):
+        pass
+
+
+#TODO: Complete a action wrapper. You can refer to hw1.
 def action_from_algo_to_env(joint_action):
     pass
 
 
-# todo
-# Once start to train, u can get saved model. Here we just say it is critic.pth.
+state_dim = 4
+action_dim = 2
+hidden_size = 64
+
+# TODO: Once start to train, u can get saved model. Here we just say it is critic.pth.
 critic_net = os.path.dirname(os.path.abspath(__file__)) + '/critic.pth'
 agent = DQN()
 agent.load(critic_net)
 
 
-# todo
+# This function dont need to change.
 def my_controller(observation, action_space, is_act_continuous=False):
     obs = observation['obs']
     action = agent.choose_action(obs)

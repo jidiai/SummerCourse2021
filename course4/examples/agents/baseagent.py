@@ -18,10 +18,10 @@ class Baseagent(object):
         for agent in self.agent:
             agent.learn()
 
-    def save(self, save_path, episode):
-        for agent in self.agent:
-            agent.save(save_path, episode)
-
-    def load(self, file):
-        for agent in self.agent:
-            agent.load(file)
+    # def save(self, save_path, episode):
+    #     for agent in self.agent:
+    #         agent.save(save_path, episode)
+    #
+    # def load(self, file):
+    #     for agent in self.agent:
+    #         agent.load(file)

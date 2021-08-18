@@ -192,6 +192,21 @@ class SACSettings(HyperparamSettings):
 
 
 @attr.s(auto_attribs=True)
+class IQLSettings(HyperparamSettings):
+    c_lr: float = 0.005
+    buffer_capacity: int = 1024
+    batch_size: int = 64
+    gamma: float = 0.99
+    epsilon: float = 0.5
+    epsilon_end: float = 0.05
+    target_replace: int = 100
+    hidden_size: int = 64
+    learn_freq: int = 1
+    learn_terminal: bool = False
+    marl: bool = True
+
+
+@attr.s(auto_attribs=True)
 class MADDPGSettings(HyperparamSettings):
     lr_c: float = 0.01
     lr_a: float = 0.01
