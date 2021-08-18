@@ -7,7 +7,7 @@
 
 ---
 ## DQN 👉请看 [dqn.py](examples/algo/dqn/dqn.py)
-
+## Homework 👉请看 [submission.py](examples/algo/homework/submission.py)
 ---
 # How to train your rl_agent:
 
@@ -26,7 +26,7 @@ We also provide 2 DQN variants - DDQN & Dueling DQN.
 
 ---
 # Bonus
-尝试训练DQN在不同环境吧，一起玩转及第金榜~
+尝试训练DQN在不同环境吧，eg.classic_MountainCar-v0，一起玩转及第金榜~
 
 完整环境和算法库链接：https://github.com/jidiai/ai_lib
 

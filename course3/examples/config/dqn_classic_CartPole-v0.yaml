@@ -14,6 +14,8 @@ hyperparameters:
   epsilon_end: 0.05
   gamma: 0.99
   hidden_size: 64
+  learn_freq: 1
+  learn_terminal: false
   marl: false
   target_replace: 100
   use_network: true
@@ -23,8 +25,6 @@ seedparameters:
   seed_random: 1
 trainingparameters:
   evaluate_rate: 50
-  learn_freq: 1
-  learn_terminal: false
-  max_episodes: 500
+  max_episodes: 1000
   render: false
-  save_interval: 500
+  save_interval: 100

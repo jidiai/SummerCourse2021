@@ -109,7 +109,7 @@ class Runner:
 
     # ==========================================================================================================
     # ============================ inference ==================================
-    def get_joint_action_eval(self, game, multi_part_agent_ids, policy_list, actions_spaces, all_observes):
+    def get_joint_action_eval(self, game, multi_part_agent_ids, policy_list, actions_spaces, all_observes, train):
         joint_action = []
         for policy_i in range(len(policy_list)):
             agents_id_list = multi_part_agent_ids[policy_i]
@@ -118,7 +118,7 @@ class Runner:
             for i in range(len(agents_id_list)):
                 agent_id = agents_id_list[i]
                 a_obs = all_observes[agent_id]
-                each = self.agent.choose_action_to_env(a_obs)
+                each = self.agent.choose_action_to_env(a_obs, train)
                 joint_action.append(each)
         return joint_action
 
@@ -133,7 +133,7 @@ class Runner:
             Gt = 0
             while not self.g_core.is_terminal():
                 step += 1
-                joint_act = self.get_joint_action_eval(self.env, multi_part_agent_ids, self.policy, actions_space, state)
+                joint_act = self.get_joint_action_eval(self.env, multi_part_agent_ids, self.policy, actions_space, state, train=True)
                 next_state, reward, done, info_before, info_after = self.env.step(joint_act)
                 self.add_experience(state, next_state, reward, np.float32(done))
 
@@ -155,21 +155,23 @@ class Runner:
             if i_epoch % self.paras.save_interval == 0:
                 self.agent.save(self.run_dir, i_epoch)
 
-            # if i_epoch % self.paras.evaluate_rate == 0 and i_epoch > 1:
-            #     Gt_real = self.evaluate(i_epoch)
-            #     self.writer.add_scalars(reward_tag, global_step=i_epoch,
-            #                             tag_scalar_dict={'real_return': Gt_real})
+            if i_epoch % self.paras.evaluate_rate == 0 and i_epoch > 1:
+                Gt_real = self.evaluate(i_epoch)
+                self.writer.add_scalars(reward_tag, global_step=i_epoch,
+                                        tag_scalar_dict={'real_return': Gt_real})
 
 
     def evaluate(self, i_epoch):
+        multi_part_agent_ids, actions_space = self.get_players_and_action_space_list()
         record = []
         for _ in range(10):
             self.env.set_seed(random.randint(0, sys.maxsize))
             state = self.env.reset()
             Gt_real = 0
             for t in count():
-                action = self.agent.choose_action(state, train=False)
-                next_state, reward, done, _, _ = self.env.step(action, train=False)
+                joint_act = self.get_joint_action_eval(self.env, multi_part_agent_ids, self.policy, actions_space,
+                                                       state, train=False)
+                next_state, reward, done, info_before, info_after = self.env.step(joint_act, train=False)
                 state = next_state
                 Gt_real += reward
                 if done:

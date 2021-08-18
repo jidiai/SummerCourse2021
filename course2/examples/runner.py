@@ -49,15 +49,17 @@ class Runner:
                 seedparameters=SeedSetting())
             save_new_paras(paras, self.log_dir, file_name)
             config_dict = load_config(self.log_dir, file_name)
-
+            print("1")
         elif not args.reload_config and os.path.exists(os.path.join(self.log_dir, file_name + '.yaml')):
             config_dict = load_config(self.log_dir, file_name)
-
+            print("2")
         elif (args.reload_config and not os.path.exists(os.path.join(config_dir, file_name + '.yaml')) and
                 os.path.exists(os.path.join(self.log_dir, file_name + '.yaml'))):
             config_dict = load_config(self.log_dir, file_name)
-
+            print("3")
         else:
+            print("4")
+            print("check reload_config: ", args.reload_config) # true
             config_dict = load_config(config_dir, file_name)
 
         paras = get_paras_from_dict(config_dict)
@@ -109,7 +111,7 @@ class Runner:
 
     # ==========================================================================================================
     # ============================ inference ==================================
-    def get_joint_action_eval(self, game, multi_part_agent_ids, policy_list, actions_spaces, all_observes):
+    def get_joint_action_eval(self, game, multi_part_agent_ids, policy_list, actions_spaces, all_observes, train):
         joint_action = []
         for policy_i in range(len(policy_list)):
             agents_id_list = multi_part_agent_ids[policy_i]
@@ -118,7 +120,7 @@ class Runner:
             for i in range(len(agents_id_list)):
                 agent_id = agents_id_list[i]
                 a_obs = all_observes[agent_id]
-                each = self.agent.choose_action_to_env(a_obs)
+                each = self.agent.choose_action_to_env(a_obs, train)
                 joint_action.append(each)
         return joint_action
 
@@ -135,7 +137,7 @@ class Runner:
             Gt = 0
             while not self.g_core.is_terminal():
                 step += 1
-                joint_act = self.get_joint_action_eval(self.env, multi_part_agent_ids, self.policy, actions_space, state)
+                joint_act = self.get_joint_action_eval(self.env, multi_part_agent_ids, self.policy, actions_space, state, train=True)
                 next_state, reward, done, info_before, info_after = self.env.step(joint_act)
                 self.add_experience(state, next_state, reward, np.float32(done))
 
@@ -178,14 +180,16 @@ class Runner:
             plot_action_values(self.paras.algo, GRID_LAYOUT, self.agent.agent[0]._q.reshape((9, 12) + (4,)), vmin=-20, vmax=100)
 
     def evaluate(self, i_epoch):
+        multi_part_agent_ids, actions_space = self.get_players_and_action_space_list()
         record = []
         for _ in range(10):
             self.env.set_seed(random.randint(0, sys.maxsize))
             state = self.env.reset()
             Gt_real = 0
             for t in count():
-                action = self.agent.choose_action(state, train=False)
-                next_state, reward, done, _, _ = self.env.step(action, train=False)
+                joint_act = self.get_joint_action_eval(self.env, multi_part_agent_ids, self.policy, actions_space,
+                                                       state, train=False)
+                next_state, reward, done, info_before, info_after = self.env.step(joint_act, train=False)
                 state = next_state
                 Gt_real += reward
                 if done:
