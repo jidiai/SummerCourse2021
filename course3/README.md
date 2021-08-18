@@ -19,10 +19,9 @@ We also provide 2 DQN variants - DDQN & Dueling DQN.
 
 >python main.py --scenario classic_CartPole-v0 --algo duelingq --reload_config 
 
-说明：
-1. 算法需要在本地训练，及第平台提供了经典算法实现、训练框架和提交样例。
-2. 在config文件夹里，已经保存了算法库对接多个环境和多个算法的训练参数。支持一键复现，只需要加 --reload_config这个参数（So cool...
-3. 训练开始后，会生成models文件夹，在models/config_training里面保存了训练过程中的参数。可以试着不加reload_config，就在👈里调参，主run会自动上传这里的参数：例如python main.py --scenario cliffwalking --algo sarsa
+Tips：
+1. 调参小技巧：加上reload_config读的是config下调好的参数；不加是读的model/config_training下的参数；每次跑参数还会在models/Cartpole/run/文件加下保存哟~
+2. 通过tensorboard看训练曲线：tensorboard --logdir=models 
 
 ---
 # Bonus
