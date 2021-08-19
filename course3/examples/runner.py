@@ -79,7 +79,6 @@ class Runner:
 
     def add_experience(self, states, state_next, reward, done):
         for agent_index, agent_i in enumerate(self.agent.agent):
-            print('======= check: ', states[agent_index]["obs"], type(states[agent_index]["obs"]), states[agent_index]["obs"][0].shape)
             agent_i.memory.insert("states", agent_index, states[agent_index]["obs"])
             agent_i.memory.insert("states_next", agent_index, state_next[agent_index]["obs"])
             agent_i.memory.insert("rewards", agent_index, reward)
@@ -130,6 +129,8 @@ class Runner:
         for i_epoch in range(1, self.paras.max_episodes+1):
             self.env.set_seed(random.randint(0, sys.maxsize))
             state = self.env.reset()
+            if self.paras.render:
+                self.env.make_render()
             step = 0
             Gt = 0
             while not self.g_core.is_terminal():
@@ -137,6 +138,9 @@ class Runner:
                 joint_act = self.get_joint_action_eval(self.env, multi_part_agent_ids, self.policy, actions_space, state, train=True)
                 next_state, reward, done, info_before, info_after = self.env.step(joint_act)
                 self.add_experience(state, next_state, reward, np.float32(done))
+
+                if self.paras.render:
+                    self.env.make_render()
 
                 state = next_state
                 if self.paras.marl:

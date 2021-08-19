@@ -26,5 +26,5 @@ seedparameters:
 trainingparameters:
   evaluate_rate: 50
   max_episodes: 1000
-  render: false
+  render: true
   save_interval: 100
