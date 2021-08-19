@@ -4,7 +4,6 @@ import sys
 base_dir = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(base_dir))
 from agents.baseagent import Baseagent
-from EnvWrapper.snakes_2p import get_observations
 from networks.critic import Critic
 
 def ini_agents(args):
@@ -16,7 +15,6 @@ def ini_agents(args):
     agent = getattr(agent_file_import, agent_class_name)(args, )
     return agent
 
-from algo.iql.iql import IQL
 
 class MultiRLAgents(Baseagent):
     def __init__(self, args):
@@ -25,16 +23,14 @@ class MultiRLAgents(Baseagent):
         self.agents = list()
         self.given_net = Critic(self.args.obs_space,  self.args.action_space, self.args.hidden_size)
         for i in range(self.args.n_player):
-            # agent_file_name = str("algo." + str(self.args.algo) + "." + str(self.args.algo))
-            # agent_file_import = importlib.import_module(agent_file_name)
-            # agent_class_name = self.args.algo.upper()
-
+            agent_file_name = str("algo." + str(self.args.algo) + "." + str(self.args.algo))
+            agent_file_import = importlib.import_module(agent_file_name)
+            agent_class_name = self.args.algo.upper()
             if self.args.share_net:
                 given_net = self.given_net
             else:
                 given_net = Critic(self.args.obs_space,  self.args.action_space, self.args.hidden_size)
-            # agent = getattr(agent_file_import, agent_class_name)(args, given_net)
-            agent = IQL(args, given_net)
+            agent = getattr(agent_file_import, agent_class_name)(args, given_net)
             self.agents.append(agent)
 
     def action_from_algo_to_env(self, joint_action):
@@ -65,6 +61,6 @@ class MultiRLAgents(Baseagent):
         for agent in self.agents:
             agent.learn()
 
-    def save(self, ):
-        for agent in self.agents:
-            agent.save()
+    def save(self, save_path, episode):
+        for id, agent in enumerate(self.agents):
+            agent.save(save_path, episode, id)

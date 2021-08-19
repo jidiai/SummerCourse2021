@@ -1,0 +1,32 @@
+algo: iql
+envparameters:
+  action_continuous: false
+  action_space: 4
+  n_player: 2
+  obs_continuous: true
+  obs_space: 18
+  scenario: snakes_2p
+hyperparameters:
+  batch_size: 64
+  buffer_capacity: 1024
+  c_lr: 0.005
+  epsilon: 0.2
+  epsilon_end: 0.05
+  gamma: 0.99
+  given_net: true
+  hidden_size: 64
+  learn_freq: 1
+  learn_terminal: false
+  marl: true
+  share_net: true
+  target_replace: 100
+  use_network: true
+seedparameters:
+  seed_nn: 1
+  seed_np: 1
+  seed_random: 1
+trainingparameters:
+  evaluate_rate: 50
+  max_episodes: 50000
+  render: false
+  save_interval: 2000

@@ -32,10 +32,9 @@ class IQL(object):
 
         if args.given_net:
             self.critic_eval = network
-            self.critic_target = network
         else:
             self.critic_eval = Critic(self.state_dim,  self.action_dim, self.hidden_size)
-            self.critic_target = Critic(self.state_dim, self.action_dim, self.hidden_size)
+        self.critic_target = Critic(self.state_dim, self.action_dim, self.hidden_size)
         self.optimizer = optimizer.Adam(self.critic_eval.parameters(), lr=self.lr)
 
         # exploration
@@ -59,7 +58,6 @@ class IQL(object):
 
     def inference(self, observation, train):
         if train:
-            state = observation.copy()
             self.eps = max(self.eps_end, self.eps - self.eps_delay)
             if random.random() < self.eps:
                 action = random.randrange(self.action_dim)

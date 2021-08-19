@@ -34,7 +34,7 @@
     "board_height": 6,
     "cell_range": 4,
     "n_beans": 5,
-    "max_step": 50,
+    "max_step": 30,
     "game_name": "snakes",
     "is_obs_continuous": false,
     "is_act_continuous": false,
