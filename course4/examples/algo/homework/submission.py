@@ -13,7 +13,7 @@ from critic import Critic
 
 
 # TODO
-class DQN:
+class IQL:
     def __init__(self):
         pass
 
@@ -26,7 +26,7 @@ def action_from_algo_to_env(joint_action):
 # todo
 # Once start to train, u can get saved model. Here we just say it is critic.pth.
 critic_net = os.path.dirname(os.path.abspath(__file__)) + '/critic.pth'
-agent = DQN()
+agent = IQL()
 agent.load(critic_net)
 
 

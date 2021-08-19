@@ -79,6 +79,7 @@ class Runner:
 
     def add_experience(self, states, state_next, reward, done):
         for agent_index, agent_i in enumerate(self.agent.agent):
+            print('======= check: ', states[agent_index]["obs"], type(states[agent_index]["obs"]), states[agent_index]["obs"][0].shape)
             agent_i.memory.insert("states", agent_index, states[agent_index]["obs"])
             agent_i.memory.insert("states_next", agent_index, state_next[agent_index]["obs"])
             agent_i.memory.insert("rewards", agent_index, reward)

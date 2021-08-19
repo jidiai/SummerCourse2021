@@ -5,10 +5,10 @@ import sys
 base_dir = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(base_dir))
 from env.chooseenv import make
-env = make("snakes_5p")
+env = make("snakes_2p")
 
 
-class snakes_5p(BaseWrapper):
+class snakes_2p(BaseWrapper):
     def __init__(self):
         self.env = env
         super().__init__(self.env)
@@ -17,7 +17,9 @@ class snakes_5p(BaseWrapper):
         return self.env.get_action_dim()
 
     def get_observationspace(self):
-        return 24
+        self.num_agents = self.env.n_player
+        self.obs_dim = 2*self.num_agents + 14
+        return self.obs_dim  # 18
 
     def step(self, action, train=True):
         '''
@@ -26,23 +28,25 @@ class snakes_5p(BaseWrapper):
 
         next_state, reward, done, _, info = self.env.step(action)
 
-        next_state_copy = next_state.copy()
-
         reward = np.array(reward)
-        ctrl_agent_index = [0,1,2,3,4]
+        ctrl_agent_index = list(range(0, self.num_agents))  # [0,1]
         step_reward = get_reward(info, ctrl_agent_index, reward)
+        next_state = [get_observations(next_state[id], id, obs_dim=self.obs_dim)
+                      for id in range(self.env.n_player)]
 
-        obs_next = np.zeros((5, 24))
-        for i, s_n in enumerate(next_state):
-            obs_next_copy = s_n.copy()
-            agent_id = obs_next_copy["controlled_snake_index"] - 2
-            agents_index = [agent_id]
-            obs_next[i] = get_observations(obs_next_copy, agents_index, obs_dim=24)[:]
+        # obs_next = np.zeros((self.num_agents, self.get_observationspace))
+        # for i, s_n in enumerate(next_state):
+        #     obs_next_copy = s_n.copy()
+        #     agent_id = obs_next_copy["controlled_snake_index"] - 2
+        #     agents_index = [agent_id]
+        #     obs_next[i] = get_observations(obs_next_copy, agents_index, obs_dim=self.get_observationspace)[:]
 
-        return next_state_copy, obs_next, step_reward, done, _, _
+        return next_state, step_reward, done, _, _
 
     def reset(self):
         state = self.env.reset()
+        state = [get_observations(state[id], id, obs_dim=self.obs_dim)
+                      for id in range(self.env.n_player)]
         return state
 
     def close(self):
@@ -98,7 +102,7 @@ def make_grid_map(board_width, board_height, beans_positions:list, snakes_positi
 # Head surroundings:    2:head_up; 3:head_down; 4:head_left; 5:head_right
 # Beans positions:      (6, 7) (8, 9) (10, 11) (12, 13) (14, 15)
 # Other snake positions: (16, 17) (18, 19) (20, 21) (22, 23) (24, 25) -- (other_x - self_x, other_y - self_y)
-def get_observations(state, agents_index, obs_dim):
+def get_observations(state, id, obs_dim):
     state_copy = state.copy()
     board_width = state_copy['board_width']
     board_height = state_copy['board_height']
@@ -114,6 +118,7 @@ def get_observations(state, agents_index, obs_dim):
     observations = np.zeros((1, obs_dim)) # todo
     snakes_position = np.array(snakes_positions_list, dtype=object)
     beans_position = np.array(beans_positions, dtype=object).flatten()
+    agents_index = [id]
     for i, element in enumerate(agents_index):
         # # self head position
         observations[i][:2] = snakes_positions_list[element][0][:]
@@ -128,11 +133,11 @@ def get_observations(state, agents_index, obs_dim):
         # beans positions
         observations[i][6:16] = beans_position[:]
 
-        # other snake positions
+        # other snake positions # todo: to check
         snake_heads = np.array([snake[0] for snake in snakes_position])
-        snake_heads = np.delete(snake_heads, i, 0)
+        snake_heads = np.delete(snake_heads, element, 0)
         observations[i][16:] = snake_heads.flatten()[:]
-    return observations
+    return observations.squeeze().tolist()
 
 
 

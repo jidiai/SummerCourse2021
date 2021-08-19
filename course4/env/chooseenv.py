@@ -18,4 +18,4 @@ def make(env_type, conf=None):
 
 
 if __name__ == "__main__":
-    make("snakes_5p")
+    make("snakes_2p")

@@ -78,8 +78,9 @@ class Runner:
         self.agent_num = 1
 
     def add_experience(self, states, state_next, reward, done):
-        for agent_index, agent_i in enumerate(self.agent.agent):
-            # agent_i.memory.insert("states", agent_index, states[agent_index]["obs"])
+
+        for agent_index, agent_i in enumerate(self.agent.agents):
+            agent_i.memory.insert("states", agent_index, states[agent_index])
             agent_i.memory.insert("states_next", agent_index, state_next[agent_index])
             agent_i.memory.insert("rewards", agent_index, reward[agent_index])
             agent_i.memory.insert("dones", agent_index, np.array(done, dtype=bool))
@@ -118,7 +119,7 @@ class Runner:
             for i in range(len(agents_id_list)):
                 agent_id = agents_id_list[i]
                 a_obs = all_observes[agent_id]
-                each = self.agent.choose_action_to_env(a_obs, train)
+                each = self.agent.choose_action_to_env(a_obs, agent_id, train)
                 joint_action.append(each)
         return joint_action
 
@@ -134,8 +135,8 @@ class Runner:
             while not self.g_core.is_terminal():
                 step += 1
                 joint_act = self.get_joint_action_eval(self.env, multi_part_agent_ids, self.policy, actions_space, state, train=True)
-                next_state, next_obs, reward, done, info_before, info_after = self.env.step(joint_act)
-                self.add_experience(state, next_obs, reward, np.float32(done))
+                next_state, reward, done, info_before, info_after = self.env.step(joint_act)
+                self.add_experience(state, next_state, reward, np.float32(done))
 
                 state = next_state
                 if self.paras.marl:
@@ -147,13 +148,13 @@ class Runner:
 
             if self.paras.learn_terminal:
                 self.agent.learn()
-            print('i_epoch: ', i_epoch, 'Gt: ', '%.2f' % Gt, "epsilon: ", self.agent.agent[0].eps)
+            print('i_epoch: ', i_epoch, 'Gt: ', '%.2f' % Gt, "epsilon: %.2f" % self.agent.agents[0].eps)
             reward_tag = 'reward'
             self.writer.add_scalars(reward_tag, global_step=i_epoch,
                                     tag_scalar_dict={'return': Gt})
 
-            # if i_epoch % self.paras.save_interval == 0:
-            #     self.agent.save(self.run_dir, i_epoch)
+            if i_epoch % self.paras.save_interval == 0:
+                self.agent.save(self.run_dir, i_epoch)
 
             # if i_epoch % self.paras.evaluate_rate == 0 and i_epoch > 1:
             #     Gt_real = self.evaluate(i_epoch)

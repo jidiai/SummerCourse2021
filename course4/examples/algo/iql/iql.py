@@ -19,7 +19,7 @@ def get_trajectory_property():
 
 
 class IQL(object):
-    def __init__(self, args):
+    def __init__(self, args, network):
 
         self.state_dim = args.obs_space
         self.action_dim = args.action_space
@@ -30,14 +30,18 @@ class IQL(object):
         self.batch_size = args.batch_size
         self.gamma = args.gamma
 
-        self.critic_eval = Critic(self.state_dim,  self.action_dim, self.hidden_size)
-        self.critic_target = Critic(self.state_dim, self.action_dim, self.hidden_size)
+        if args.given_net:
+            self.critic_eval = network
+            self.critic_target = network
+        else:
+            self.critic_eval = Critic(self.state_dim,  self.action_dim, self.hidden_size)
+            self.critic_target = Critic(self.state_dim, self.action_dim, self.hidden_size)
         self.optimizer = optimizer.Adam(self.critic_eval.parameters(), lr=self.lr)
 
         # exploration
         self.eps = args.epsilon
         self.eps_end = args.epsilon_end
-        self.eps_delay = 1 / (args.max_episodes * 2000)
+        self.eps_delay = 1 / (args.max_episodes * 100)
 
         # 更新target网
         self.learn_step_counter = 0
@@ -67,8 +71,7 @@ class IQL(object):
             observation = torch.tensor(observation, dtype=torch.float).view(1, -1)
             action = torch.argmax(self.critic_eval(observation)).item()
 
-        return {"action": action,
-                "states": state}
+        return {"action": action}
 
     def add_experience(self, output):
         agent_id = 0
@@ -76,12 +79,11 @@ class IQL(object):
             self.memory.insert(k, agent_id, v)
 
     def learn(self):
-        data_length = len(self.memory.item_buffers["rewards"].data)
+
+        data_length = len(self.memory.item_buffers["action"].data)
         if data_length < self.buffer_size:
             return
-
         data = self.memory.sample(self.batch_size)
-
         transitions = {
             "o_0": np.array(data['states']),
             "o_next_0": np.array(data['states_next']),
@@ -90,7 +92,7 @@ class IQL(object):
             "d_0": np.array(data['dones']).reshape(-1, 1),
         }
 
-        obs = torch.tensor(transitions["o_0"], dtype=torch.float).view(self.batch_size, -1)
+        obs = torch.tensor(transitions["o_0"], dtype=torch.float)
         obs_ = torch.tensor(transitions["o_next_0"], dtype=torch.float)
         action = torch.tensor(transitions["u_0"], dtype=torch.long).view(self.batch_size, -1)
         reward = torch.tensor(transitions["r_0"], dtype=torch.float).squeeze()
@@ -112,12 +114,12 @@ class IQL(object):
 
         return loss
 
-    def save(self, save_path, episode):
+    def save(self, save_path, episode, id):
         base_path = os.path.join(save_path, 'trained_model')
         if not os.path.exists(base_path):
             os.makedirs(base_path)
 
-        model_critic_path = os.path.join(base_path, "critic_" + str(episode) + ".pth")
+        model_critic_path = os.path.join(base_path, "critic_" + str(id) + "_" + str(episode) + ".pth")
         torch.save(self.critic_eval.state_dict(), model_critic_path)
 
     def load(self, file):

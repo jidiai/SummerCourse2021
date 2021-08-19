@@ -204,6 +204,8 @@ class IQLSettings(HyperparamSettings):
     learn_freq: int = 1
     learn_terminal: bool = False
     marl: bool = True
+    share_net: bool = True
+    given_net: bool = True
 
 
 @attr.s(auto_attribs=True)
