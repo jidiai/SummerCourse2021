@@ -119,7 +119,7 @@ def main(args):
             done = np.array([done] * ctrl_agent_num)
 
             # store transitions
-            trans = Transition(obs, actions, step_reward, np.array(next_obs), done)
+            trans = Transition(obs, action, step_reward, np.array(next_obs), done)
             model.store_transition(trans)
             model.learn()
             obs = next_obs
