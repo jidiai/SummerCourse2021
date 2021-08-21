@@ -1,6 +1,6 @@
 # 习题课第二天
 
-## 任务：环境悬崖漫步 - 算法Q-learning & SARSA - 提交到Jidi平台，成绩优于随机10%
+## 任务：环境悬崖漫步 - 算法Q-learning & SARSA - 作业要求：提交到Jidi平台，积分 > -90
 
 提交链接：http://www.jidiai.cn/cliffwalking
 

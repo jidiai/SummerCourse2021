@@ -1,6 +1,6 @@
 # 习题课第四天
 
-## 任务：贪吃蛇 snakes_2p - 算法IQL - 提交到Jidi平台，成绩优于随机10%
+## 任务：贪吃蛇 snakes_2p - 算法IQL - 作业要求：提交到Jidi平台，积分 >= 3.0
 
 提交链接：http://www.jidiai.cn/snakes2p
 

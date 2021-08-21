@@ -1,6 +1,6 @@
 # RLChina2021 SummerCourse 大作业
 
-## 任务：贪吃蛇 snakes_1v1 - 算法自定义 - 提交到Jidi平台，成绩优于随机
+## 任务：贪吃蛇 snakes_1v1 - 算法自定义 - 作业要求：提交到Jidi平台习题课擂台，且最终排名高于Jidi_random
 提交链接：[RLChina2021暑期习题课擂台](http://www.jidiai.cn/compete_detail?compete=7#competitionRule)
 
 

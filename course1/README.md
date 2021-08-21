@@ -1,6 +1,6 @@
 # 习题课第一天
 
-## 任务：环境推箱子 - random策略 - 提交到Jidi平台
+## 任务：环境推箱子 - random策略 - 作业要求: 提交到Jidi平台并验证通过
 ![image](../assets/hw1.png)
 
 

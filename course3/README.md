@@ -1,6 +1,6 @@
 # 习题课第三天
 
-## 任务：车杆cartpole - 算法DQN - 提交到Jidi平台，成绩优于随机10%
+## 任务：车杆cartpole - 算法DQN - 作业要求：提交到Jidi平台，积分 > 80
 
 提交链接：http://www.jidiai.cn/cartpole
 
