@@ -9,6 +9,7 @@ from env.chooseenv import make
 from utils.get_logger import get_logger
 from env.obs_interfaces.observation import obs_type
 
+import argparse
 
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -102,7 +103,7 @@ def run_game(g, env_name, multi_part_agent_ids, actions_spaces, policy_list, ren
         if policy_list[i] not in get_valid_agents():
             raise Exception("agents {} not valid!".format(policy_list[i]))
 
-        file_path = os.path.dirname(os.path.abspath(__file__)) + "/examples/algo/" + policy_list[i] + "/random.py"
+        file_path = os.path.dirname(os.path.abspath(__file__)) + "/examples/algo/homework" + "/submission.py"
         if not os.path.exists(file_path):
             raise Exception("file {} not exist!".format(file_path))
 
@@ -175,16 +176,15 @@ if __name__ == "__main__":
     # "ParticleEnv-simple_tag", "ParticleEnv-simple_world_comm", "football_11_vs_11_stochastic",
     # "overcookedai-cramped_room", "overcookedai-asymmetric_advantages", "overcookedai-coordination_ring",
     # "overcookedai-forced_coordination", "overcookedai-counter_circuit", "magent-battle_v3-12v12",
-    # "magent-battle_v3-20v20", "gridworld"
-    env_type = "gridworld"
+    # "magent-battle_v3-20v20", "gridworld", "cliffwalking"
+    env_type = "classic_CartPole-v0"
     game = make(env_type)
 
     # 针对"classic_"环境，使用gym core 进行render;
     # 非"classic_"环境，使用replay工具包的replay.html，通过上传.json进行网页回放
     render_mode = True
 
-    # print("可选policy 名称类型:", get_valid_agents())
-    policy_list = ["random"] * len(game.agent_nums)
+    policy_list = ["dqn"] * len(game.agent_nums)
 
     multi_part_agent_ids, actions_space = get_players_and_action_space_list(game)
     run_game(game, env_type, multi_part_agent_ids, actions_space, policy_list, render_mode)

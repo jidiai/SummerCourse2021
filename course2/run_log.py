@@ -184,12 +184,7 @@ if __name__ == "__main__":
     # 非"classic_"环境，使用replay工具包的replay.html，通过上传.json进行网页回放
     render_mode = True
 
-    # print("可选policy 名称类型:", get_valid_agents())
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--my_ai", default="tabularq")
-    args = parser.parse_args()
-
-    policy_list = [args.my_ai] * len(game.agent_nums)
+    policy_list = ["tabularq"] * len(game.agent_nums)
 
     multi_part_agent_ids, actions_space = get_players_and_action_space_list(game)
     run_game(game, env_type, multi_part_agent_ids, actions_space, policy_list, render_mode)

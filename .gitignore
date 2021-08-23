@@ -1,9 +1,12 @@
 __pycache__
 .idea*
 /course2/logs
+/course3/logs
+/course4/logs
 .DS_Store
 /course2/examples/models
 /course3/examples/models
 /course4/examples/models
 /course5/examples/models
 /course_competition/rl_trainer/models
+/course_competition/logs
