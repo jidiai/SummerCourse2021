@@ -1,3 +1,5 @@
+import numpy as np
+
 def make_grid_map(board_width, board_height, beans_positions:list, snakes_positions:dict):
     snakes_map = [[[0] for _ in range(board_width)] for _ in range(board_height)]
     for index, pos in snakes_positions.items():
